@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="theme-color" content="#C0392B"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon.svg"/>
 <title>Workout Tracker</title>
 <style>
   :root {
@@ -37,13 +40,13 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; background: var(--bg); font-family: -apple-system, 'Helvetica Neue', sans-serif; color: var(--text); }
   body { display: flex; flex-direction: column; max-width: 430px; margin: 0 auto; }
- 
+
   /* TOP BAR */
   .topbar { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 20px 12px; position: sticky; top: 0; z-index: 100; }
   .topbar-row { display: flex; align-items: center; justify-content: space-between; }
   .topbar h1 { font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
   .topbar .date { font-size: 13px; color: var(--text2); margin-top: 1px; }
- 
+
   /* DAY SELECTOR */
   .day-selector { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 14px 16px; background: var(--bg); }
   .day-btn { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 4px; text-align: center; cursor: pointer; transition: all .15s; }
@@ -52,20 +55,20 @@
   .day-btn.active .d-day { color: rgba(255,255,255,.75); }
   .day-btn .d-type { font-size: 13px; font-weight: 700; color: var(--text); margin-top: 2px; }
   .day-btn.active .d-type { color: #fff; }
- 
+
   /* SCROLL AREA */
   .scroll-area { flex: 1; overflow-y: auto; padding: 0 16px 100px; -webkit-overflow-scrolling: touch; }
- 
+
   /* DAY LABEL */
   .day-label { font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .06em; padding: 16px 0 10px; }
- 
+
   /* EXERCISE CARD */
   .ex-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
   .ex-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
   .ex-name { font-size: 16px; font-weight: 700; line-height: 1.25; color: var(--text); flex: 1; padding-right: 8px; }
   .ex-target { display: inline-block; font-size: 12px; font-weight: 600; background: var(--red-light); color: var(--red); border-radius: 6px; padding: 3px 8px; margin-bottom: 8px; }
   .ex-note { font-size: 12px; color: var(--text2); line-height: 1.4; margin-bottom: 12px; }
- 
+
   /* SETS TABLE */
   .sets-header { display: grid; grid-template-columns: 30px 1fr 1fr 44px; gap: 6px; margin-bottom: 6px; }
   .sets-header span { font-size: 11px; font-weight: 600; color: var(--text3); text-align: center; text-transform: uppercase; letter-spacing: .04em; }
@@ -79,19 +82,19 @@
   .check-btn svg { width: 20px; height: 20px; }
   .check-btn:not(.done) svg { color: var(--text3); }
   .check-btn.done svg { color: #fff; }
- 
+
   .add-set { width: 100%; margin-top: 4px; padding: 10px; border: 1.5px dashed var(--border); border-radius: 8px; background: transparent; font-size: 14px; font-weight: 600; color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
- 
+
   /* BEST */
   .best-row { display: flex; align-items: center; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text2); }
   .best-val { font-weight: 700; color: var(--green); }
- 
+
   /* BOTTOM BAR */
   .bottom-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; background: var(--card); border-top: 1px solid var(--border); padding: 12px 16px; padding-bottom: max(12px, env(safe-area-inset-bottom)); display: flex; gap: 10px; z-index: 100; }
   .save-btn { flex: 1; padding: 16px; border-radius: var(--radius-sm); background: var(--red); color: white; border: none; font-size: 16px; font-weight: 700; cursor: pointer; letter-spacing: .2px; }
   .save-btn:active { opacity: .85; transform: scale(.99); }
   .hist-tab-btn { padding: 16px 18px; border-radius: var(--radius-sm); background: var(--bg); border: none; cursor: pointer; font-size: 22px; }
- 
+
   /* HISTORY */
   .history-view { display: none; }
   .hist-header { font-size: 14px; font-weight: 700; color: var(--text); padding: 16px 0 10px; letter-spacing: -.2px; }
@@ -104,14 +107,14 @@
   .hist-sets { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
   .empty { text-align: center; padding: 60px 20px; color: var(--text2); font-size: 15px; line-height: 1.6; }
   .empty .icon { font-size: 48px; display: block; margin-bottom: 12px; }
- 
+
   /* TOAST */
   .toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #1A1A1A; color: #fff; padding: 12px 20px; border-radius: 40px; font-size: 14px; font-weight: 600; z-index: 999; transition: transform .3s cubic-bezier(.34,1.56,.64,1); white-space: nowrap; }
   .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
- 
+
 <div id="app-train">
   <div class="topbar">
     <div class="topbar-row">
@@ -121,7 +124,7 @@
       </div>
     </div>
   </div>
- 
+
   <div class="day-selector">
     <div class="day-btn active" onclick="selectDay('lun',this)">
       <div class="d-day">Lun</div><div class="d-type">Push</div>
@@ -136,15 +139,15 @@
       <div class="d-day">Ven</div><div class="d-type">Upper</div>
     </div>
   </div>
- 
+
   <div class="scroll-area" id="exercises-area"></div>
- 
+
   <div class="bottom-bar">
     <button class="save-btn" onclick="saveWorkout()">✓ Salva allenamento</button>
     <button class="hist-tab-btn" onclick="showHistory()" aria-label="Storico">📋</button>
   </div>
 </div>
- 
+
 <div id="app-history" style="display:none">
   <div class="topbar">
     <div class="topbar-row">
@@ -155,13 +158,16 @@
     </div>
   </div>
   <div class="scroll-area" id="history-area"></div>
-  <div class="bottom-bar">
-    <button class="save-btn" onclick="showTrain()">← Torna all'allenamento</button>
+  <div class="bottom-bar" style="gap:8px">
+    <button class="save-btn" onclick="showTrain()" style="flex:1">← Allena</button>
+    <button class="hist-tab-btn" onclick="backupData()" aria-label="Backup dati" title="Scarica backup">💾</button>
+    <button class="hist-tab-btn" onclick="importBackup()" aria-label="Ripristina backup" title="Ripristina backup">📂</button>
   </div>
 </div>
- 
+<input type="file" id="import-file" accept=".json" style="display:none" onchange="restoreBackup(this)"/>
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
 const DAYS = {
   lun:{label:'Push — Petto · Spalle · Tricipiti', exercises:[
@@ -215,10 +221,10 @@ const DAYS = {
     {id:'v12',name:'Curl cavo basso + Curl manubri alternati',target:'3+3 × 12 reps',note:'Superset bicipiti: tensione costante + ROM completo.',sets:3},
   ]}
 };
- 
+
 let currentDay = 'lun';
 let session = {};
- 
+
 function initSession(day) {
   if (!session[day]) {
     session[day] = {};
@@ -227,11 +233,11 @@ function initSession(day) {
     });
   }
 }
- 
+
 function saveField(day, exId, idx, field, val) {
   session[day][exId][idx][field] = val;
 }
- 
+
 function toggleDone(day, exId, idx) {
   const s = session[day][exId][idx];
   s.done = !s.done;
@@ -243,12 +249,12 @@ function toggleDone(day, exId, idx) {
       : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>`;
   }
 }
- 
+
 function addSet(day, exId) {
   session[day][exId].push({kg:'', reps:'', done:false});
   renderExercises(day);
 }
- 
+
 async function getBest(exId) {
   try {
     const key = 'best_' + exId;
@@ -256,13 +262,13 @@ async function getBest(exId) {
     return val ? JSON.parse(val) : null;
   } catch(e) { return null; }
 }
- 
+
 async function renderExercises(day) {
   initSession(day);
   const area = document.getElementById('exercises-area');
   const prog = DAYS[day];
   let html = `<div class="day-label">${prog.label}</div>`;
- 
+
   for (const ex of prog.exercises) {
     const best = getBestSync(ex.id);
     const sets = session[day][ex.id];
@@ -288,11 +294,11 @@ async function renderExercises(day) {
           </button>
         </div>`;
     });
- 
+
     const bestHTML = best
       ? `<div class="best-row">🏆 Record: <span class="best-val">${best.kg}kg × ${best.reps} reps</span></div>`
       : '';
- 
+
     html += `
       <div class="ex-card">
         <div class="ex-name">${ex.name}</div>
@@ -306,26 +312,26 @@ async function renderExercises(day) {
         ${bestHTML}
       </div>`;
   }
- 
+
   area.innerHTML = html;
 }
- 
+
 function getBestSync(exId) {
   try { const v = localStorage.getItem('best_'+exId); return v ? JSON.parse(v) : null; } catch(e) { return null; }
 }
- 
+
 function selectDay(day, el) {
   currentDay = day;
   document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   renderExercises(day);
 }
- 
+
 function saveWorkout() {
   initSession(currentDay);
   const prog = DAYS[currentDay];
   const summary = [];
- 
+
   prog.exercises.forEach(ex => {
     const completed = session[currentDay][ex.id].filter(s => s.done && s.kg && s.reps);
     if (completed.length > 0) {
@@ -334,9 +340,9 @@ function saveWorkout() {
       try { localStorage.setItem('best_'+ex.id, JSON.stringify({kg:best.kg, reps:best.reps})); } catch(e){}
     }
   });
- 
+
   if (summary.length === 0) { showToast('⚠️ Segna almeno una serie!'); return; }
- 
+
   const now = new Date();
   const entry = {
     date: now.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'}),
@@ -344,31 +350,31 @@ function saveWorkout() {
     dayLabel: prog.label.split('—')[0].trim(),
     summary
   };
- 
+
   try {
     let hist = JSON.parse(localStorage.getItem('workout_history') || '[]');
     hist.unshift(entry);
     if (hist.length > 60) hist = hist.slice(0, 60);
     localStorage.setItem('workout_history', JSON.stringify(hist));
   } catch(e){}
- 
+
   session[currentDay] = null;
   showToast(`✅ Salvato! ${summary.length} esercizi completati`);
   renderExercises(currentDay);
 }
- 
+
 function showHistory() {
   document.getElementById('app-train').style.display = 'none';
   document.getElementById('app-history').style.display = 'block';
   const area = document.getElementById('history-area');
   let hist = [];
   try { hist = JSON.parse(localStorage.getItem('workout_history') || '[]'); } catch(e){}
- 
+
   if (hist.length === 0) {
     area.innerHTML = `<div class="empty"><span class="icon">📭</span>Nessun allenamento salvato ancora.<br>Completa il primo workout e salvalo!</div>`;
     return;
   }
- 
+
   let html = `<div class="hist-header">${hist.length} allenamenti salvati</div>`;
   hist.forEach(entry => {
     let exRows = entry.summary.map(ex => {
@@ -383,25 +389,100 @@ function showHistory() {
   });
   area.innerHTML = html;
 }
- 
+
 function showTrain() {
   document.getElementById('app-history').style.display = 'none';
   document.getElementById('app-train').style.display = 'block';
 }
- 
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
 }
- 
+
+// ── BACKUP / RIPRISTINO ──────────────────────────────
+function backupData() {
+  try {
+    const data = {
+      version: 1,
+      exported: new Date().toISOString(),
+      workout_history: JSON.parse(localStorage.getItem('workout_history') || '[]'),
+      bests: {}
+    };
+    // Raccogli tutti i record personali
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('best_')) {
+        data.bests[key] = localStorage.getItem(key);
+      }
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dateStr = new Date().toLocaleDateString('it-IT').replace(/\//g,'-');
+    a.href = url;
+    a.download = `workout-backup-${dateStr}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('💾 Backup scaricato!');
+  } catch(e) {
+    showToast('❌ Errore nel backup');
+  }
+}
+
+function importBackup() {
+  document.getElementById('import-file').click();
+}
+
+function restoreBackup(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.version || !data.workout_history) {
+        showToast('❌ File non valido'); return;
+      }
+      if (!confirm(`Ripristinare ${data.workout_history.length} allenamenti dal backup del ${new Date(data.exported).toLocaleDateString('it-IT')}?\n\nI dati attuali verranno sostituiti.`)) return;
+      localStorage.setItem('workout_history', JSON.stringify(data.workout_history));
+      if (data.bests) {
+        Object.entries(data.bests).forEach(([k,v]) => localStorage.setItem(k, v));
+      }
+      showToast(`✅ Ripristinati ${data.workout_history.length} allenamenti!`);
+      renderHistory();
+    } catch(err) {
+      showToast('❌ File corrotto o non valido');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+// ── SERVICE WORKER (PWA) ─────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .catch(err => console.log('SW non registrato:', err));
+  });
+}
+
+// ── STORAGE PERSISTENTE ──────────────────────────────
+if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persist().then(granted => {
+    if (granted) console.log('Storage persistente attivato');
+  });
+}
+
+// ── INIT ─────────────────────────────────────────────
 const days = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
 const months = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'];
 const now = new Date();
 document.getElementById('today-str').textContent =
   `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
- 
+
 renderExercises('lun');
 </script>
 </body>

@@ -1,0 +1,14 @@
+{
+  "name": "Workout Tracker",
+  "short_name": "Workout",
+  "description": "Il tuo tracker allenamento personale",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F4F4F6",
+  "theme_color": "#C0392B",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
